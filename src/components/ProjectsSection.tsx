@@ -21,10 +21,10 @@ const projects = [
     github: "https://github.com/mahrous-amer/FYP",
   },
   {
-    name: "recyclerview",
-    description: "Android RecyclerView implementation with efficient view recycling and custom adapters.",
-    tech: ["Java", "Android", "UI"],
-    github: "https://github.com/mahrous-amer/recyclerview",
+    name: "EmailSentinel",
+    description: "Intelligent email security tool for detecting phishing, spam, and malicious content using advanced analysis techniques.",
+    tech: ["Python", "Security", "Email"],
+    github: "https://github.com/mahrous-amer/EmailSentinel",
   },
   {
     name: "octocrypto",

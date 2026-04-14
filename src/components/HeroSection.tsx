@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
-import { Github, Linkedin, Instagram, ChevronDown } from "lucide-react";
+import { Github, Linkedin, Instagram, ChevronDown, Download } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 const socials = [
   { icon: Github, href: "https://github.com/mahrous-amer", label: "GitHub" },
@@ -48,20 +49,28 @@ const HeroSection = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.7 }}
-          className="flex justify-center gap-4 mb-12"
+          className="flex flex-col sm:flex-row justify-center items-center gap-4 mb-12"
         >
-          {socials.map((s) => (
-            <a
-              key={s.label}
-              href={s.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="p-3 rounded-lg border border-border hover:border-primary hover:text-primary text-muted-foreground transition-all hover:border-glow"
-              aria-label={s.label}
-            >
-              <s.icon size={20} />
+          <div className="flex gap-4">
+            {socials.map((s) => (
+              <a
+                key={s.label}
+                href={s.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="p-3 rounded-lg border border-border hover:border-primary hover:text-primary text-muted-foreground transition-all hover:border-glow"
+                aria-label={s.label}
+              >
+                <s.icon size={20} />
+              </a>
+            ))}
+          </div>
+
+          <Button asChild className="gap-2 font-mono text-sm">
+            <a href="/Mohamed_Mahrous_Amer_CV.pdf" download>
+              <Download size={16} /> Download CV
             </a>
-          ))}
+          </Button>
         </motion.div>
 
         <motion.a

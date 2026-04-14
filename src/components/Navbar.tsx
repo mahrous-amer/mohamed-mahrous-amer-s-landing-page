@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Menu, X } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Menu, X, Sun, Moon } from "lucide-react";
 
 const links = [
   { label: "About", href: "#about" },
@@ -12,6 +12,22 @@ const links = [
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
+  const [dark, setDark] = useState(() => {
+    if (typeof window !== "undefined") {
+      return !document.documentElement.classList.contains("light");
+    }
+    return true;
+  });
+
+  useEffect(() => {
+    if (dark) {
+      document.documentElement.classList.remove("light");
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+      document.documentElement.classList.add("light");
+    }
+  }, [dark]);
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 backdrop-blur-xl bg-background/70 border-b border-border">
@@ -21,7 +37,7 @@ const Navbar = () => {
         </a>
 
         {/* Desktop */}
-        <div className="hidden md:flex gap-8">
+        <div className="hidden md:flex items-center gap-8">
           {links.map((l) => (
             <a
               key={l.href}
@@ -31,16 +47,32 @@ const Navbar = () => {
               {l.label}
             </a>
           ))}
+          <button
+            onClick={() => setDark(!dark)}
+            className="p-2 rounded-lg border border-border hover:border-primary text-muted-foreground hover:text-primary transition-all"
+            aria-label="Toggle theme"
+          >
+            {dark ? <Sun size={16} /> : <Moon size={16} />}
+          </button>
         </div>
 
         {/* Mobile toggle */}
-        <button
-          className="md:hidden text-foreground"
-          onClick={() => setOpen(!open)}
-          aria-label="Toggle menu"
-        >
-          {open ? <X size={24} /> : <Menu size={24} />}
-        </button>
+        <div className="flex md:hidden items-center gap-2">
+          <button
+            onClick={() => setDark(!dark)}
+            className="p-2 rounded-lg border border-border hover:border-primary text-muted-foreground hover:text-primary transition-all"
+            aria-label="Toggle theme"
+          >
+            {dark ? <Sun size={16} /> : <Moon size={16} />}
+          </button>
+          <button
+            className="text-foreground"
+            onClick={() => setOpen(!open)}
+            aria-label="Toggle menu"
+          >
+            {open ? <X size={24} /> : <Menu size={24} />}
+          </button>
+        </div>
       </div>
 
       {/* Mobile menu */}

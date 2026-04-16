@@ -41,7 +41,7 @@ const HeroSection = () => {
           transition={{ delay: 0.5 }}
           className="font-mono text-muted-foreground text-sm sm:text-base mb-8"
         >
-          Backend Engineer · Systems Thinker · Building Scalable Foundations
+          Senior Software Engineer & Tech Lead · Fintech · Payments at Scale
           <span className="cursor-blink text-primary ml-1">▌</span>
         </motion.div>
 

@@ -1,87 +1,107 @@
 import { motion } from "framer-motion";
 import { ExternalLink, Github } from "lucide-react";
+import SectionHeader from "./SectionHeader";
 
-const projects = [
-  {
-    name: "caaspay-api-go",
-    description: "Payment processing API built with Go — scalable fintech backend powering real-time transactions.",
-    tech: ["Go", "REST API", "Fintech"],
-    github: "https://github.com/mahrous-amer/caaspay-api-go",
-  },
-  {
-    name: "micro",
-    description: "Microservice framework and toolkit in Python for building distributed backend systems.",
-    tech: ["Python", "Microservices", "Docker"],
-    github: "https://github.com/mahrous-amer/micro",
-  },
-  {
-    name: "FYP",
-    description: "Final Year Project — a full-stack application showcasing ML-driven data processing pipelines.",
-    tech: ["Python", "ML", "Data Pipeline"],
-    github: "https://github.com/mahrous-amer/FYP",
-  },
+interface Project {
+  name: string;
+  description: string;
+  tech: string[];
+  year: string;
+  github?: string;
+}
+
+const projects: Project[] = [
   {
     name: "EmailSentinel",
-    description: "Intelligent email security tool for detecting phishing, spam, and malicious content using advanced analysis techniques.",
-    tech: ["Python", "Security", "Email"],
+    description:
+      "Serverless email monitoring and alerting system for enterprise environments — detects anomalies, phishing, and compliance risks in real time.",
+    tech: ["AWS Lambda", "SQS", "DynamoDB"],
+    year: "2024 – 2025",
     github: "https://github.com/mahrous-amer/EmailSentinel",
   },
   {
-    name: "octocrypto",
-    description: "Cryptocurrency utilities and tooling for blockchain data processing and analysis.",
-    tech: ["Crypto", "Blockchain", "API"],
+    name: "Graphical Authentication (FYP)",
+    description:
+      "Web-based graphical authentication system resistant to shoulder-surfing, brute-force, dictionary, and CSRF attacks. Published at ICITS2021 and F1000Research.",
+    tech: ["Python", "Django", "PostgreSQL", "jQuery"],
+    year: "2021",
+    github: "https://github.com/mahrous-amer/FYP",
+  },
+  {
+    name: "CryptoBot",
+    description:
+      "Plugin-based arbitrage trading bot for BTC, ETH, and XRP with a modular architecture — each exchange and strategy is a swappable plugin.",
+    tech: ["Docker", "Python", "Postgres"],
+    year: "2021",
     github: "https://github.com/mahrous-amer/octocrypto",
+  },
+  {
+    name: "Hydroponics",
+    description:
+      "IoT system to fully automate the growth of hydroponic plants in a water-based medium — sensor telemetry, control loops, and a web dashboard.",
+    tech: ["Docker", "Caddy", "FastAPI", "Redis"],
+    year: "2020",
   },
 ];
 
 const ProjectsSection = () => (
-  <section id="projects" className="py-24 px-4">
-    <div className="max-w-4xl mx-auto">
-      <motion.div
-        initial={{ opacity: 0, y: 40 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "-100px" }}
-        transition={{ duration: 0.5 }}
-      >
-        <h2 className="font-mono text-primary text-sm mb-2">{"03. // Projects"}</h2>
-        <h3 className="text-3xl sm:text-4xl font-bold mb-10">Featured Work</h3>
-      </motion.div>
+  <section id="projects" className="py-24">
+    <SectionHeader number="04" label="Projects" heading={<>Featured Work</>} />
 
+    <div className="max-w-4xl mx-auto px-4">
       <div className="grid gap-4">
-        {projects.map((p, i) => (
-          <motion.a
-            key={p.name}
-            href={p.github}
-            target="_blank"
-            rel="noopener noreferrer"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: i * 0.08, duration: 0.4 }}
-            className="group flex flex-col sm:flex-row sm:items-center gap-4 p-6 rounded-lg border border-border bg-card hover:border-primary/50 transition-all"
-          >
-            <div className="flex-1">
-              <div className="flex items-center gap-2 mb-2">
-                <Github size={16} className="text-primary" />
-                <span className="font-mono font-semibold text-foreground group-hover:text-primary transition-colors">
-                  {p.name}
-                </span>
-              </div>
-              <p className="text-sm text-muted-foreground mb-3">{p.description}</p>
-              <div className="flex flex-wrap gap-2">
-                {p.tech.map((t) => (
-                  <span key={t} className="text-xs font-mono px-2 py-0.5 rounded bg-secondary text-muted-foreground">
-                    {t}
+        {projects.map((p, i) => {
+          const Wrapper = p.github ? motion.a : motion.div;
+          const wrapperProps = p.github
+            ? { href: p.github, target: "_blank", rel: "noopener noreferrer" }
+            : {};
+          return (
+            <Wrapper
+              key={p.name}
+              {...wrapperProps}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.08, duration: 0.4 }}
+              className={`group flex flex-col sm:flex-row sm:items-center gap-4 p-6 rounded-lg border border-border bg-card transition-all ${
+                p.github ? "hover:border-primary/50 cursor-pointer" : ""
+              }`}
+            >
+              <div className="flex-1">
+                <div className="flex items-center gap-2 mb-2">
+                  {p.github && <Github size={16} className="text-primary" />}
+                  <span className="font-mono font-semibold text-foreground group-hover:text-primary transition-colors">
+                    {p.name}
                   </span>
-                ))}
+                  <span className="font-mono text-xs text-muted-foreground/60 ml-auto sm:ml-2">
+                    {p.year}
+                  </span>
+                </div>
+                <p className="text-sm text-muted-foreground mb-3">{p.description}</p>
+                <div className="flex flex-wrap gap-2">
+                  {p.tech.map((t) => (
+                    <span
+                      key={t}
+                      className="text-xs font-mono px-2 py-0.5 rounded bg-secondary text-muted-foreground"
+                    >
+                      {t}
+                    </span>
+                  ))}
+                </div>
               </div>
-            </div>
-            <ExternalLink size={16} className="text-muted-foreground group-hover:text-primary transition-colors shrink-0" />
-          </motion.a>
-        ))}
+              {p.github && (
+                <ExternalLink
+                  size={16}
+                  className="text-muted-foreground group-hover:text-primary transition-colors shrink-0"
+                />
+              )}
+            </Wrapper>
+          );
+        })}
       </div>
     </div>
   </section>
 );
+
 
 export default ProjectsSection;

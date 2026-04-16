@@ -7,17 +7,17 @@ import { MessageFlow, type Flow } from "./MessageFlow";
 // Microservices surrounding a central message broker (pub/sub).
 // Every service publishes to the broker; the broker fans out to subscribers.
 const SERVICES = [
-  { label: "auth",          tech: "Go",            color: "#60a5fa" },
-  { label: "orders",        tech: "Node.js",       color: "#34d399" },
-  { label: "payments",      tech: "Python",        color: "#fbbf24" },
-  { label: "inventory",     tech: "Rust",          color: "#f87171" },
-  { label: "notifications", tech: "TypeScript",    color: "#a78bfa" },
-  { label: "analytics",     tech: "Spark",         color: "#22d3ee" },
+  { label: "payments",      tech: "Perl",     color: "#60a5fa" },
+  { label: "cashier",       tech: "Go",       color: "#34d399" },
+  { label: "reconciliation", tech: "Python",  color: "#fbbf24" },
+  { label: "audit",         tech: "C# .NET",  color: "#f87171" },
+  { label: "notifications", tech: "Node.js",  color: "#a78bfa" },
+  { label: "reporting",     tech: "BigQuery", color: "#22d3ee" },
 ];
 
 export function BrokerTopology() {
   const positions = useMemo(
-    () => circlePositions(SERVICES.length, 2.6),
+    () => circlePositions(SERVICES.length, 3.2),
     []
   );
   const broker = useMemo(() => new THREE.Vector3(0, 0, 0), []);
@@ -51,7 +51,7 @@ export function BrokerTopology() {
 
   return (
     <group>
-      <HubNode label="Message Broker" tech="Kafka" color="#8b5cf6" size={0.75} />
+      <HubNode label="Message Broker" tech="Redis Streams" color="#8b5cf6" size={0.75} />
       {SERVICES.map((s, i) => (
         <ServiceNode key={s.label} position={positions[i]} {...s} />
       ))}

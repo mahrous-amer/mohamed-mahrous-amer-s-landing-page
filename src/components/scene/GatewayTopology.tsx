@@ -6,27 +6,30 @@ import { MessageFlow, type Flow } from "./MessageFlow";
 // Clients hit a single API gateway that forwards to the right service
 // (synchronous request/response — responses animate back).
 const SERVICES = [
-  { label: "users",    tech: "Go",         color: "#60a5fa" },
-  { label: "catalog",  tech: "Node.js",    color: "#34d399" },
-  { label: "checkout", tech: "Python",     color: "#fbbf24" },
-  { label: "search",   tech: "Elastic",    color: "#f87171" },
-  { label: "media",    tech: "Rust",       color: "#a78bfa" },
+  { label: "auth",       tech: "Go",          color: "#60a5fa" },
+  { label: "accounts",   tech: "Perl",        color: "#34d399" },
+  { label: "payments",   tech: "C# .NET",     color: "#fbbf24" },
+  { label: "reporting",  tech: "Python",      color: "#f87171" },
+  { label: "compliance", tech: "SQL Server",  color: "#a78bfa" },
 ];
 
 export function GatewayTopology() {
-  const client = useMemo(() => new THREE.Vector3(-3.2, 0, 0), []);
-  const gateway = useMemo(() => new THREE.Vector3(-0.8, 0, 0), []);
+  // Client in front (+z), gateway at origin, services fanned behind (-z)
+  const client = useMemo(() => new THREE.Vector3(0, 0.2, 3.2), []);
+  const gateway = useMemo(() => new THREE.Vector3(0, 0, 0.5), []);
 
-  // Services arrayed in a vertical fan to the right of the gateway
+  // Services arrayed in a backward-facing arc at z<0, spread across a 180° fan
   const positions = useMemo(() => {
     const count = SERVICES.length;
+    const radius = 3;
     return SERVICES.map((_, i) => {
-      const t = count === 1 ? 0 : i / (count - 1);
-      // Spread services from +y to -y
-      const y = (t - 0.5) * 3.2;
-      // Slight forward/back depth for 3D feel
-      const z = Math.sin(t * Math.PI) * 0.9;
-      return new THREE.Vector3(2.3, y, z);
+      const t = count === 1 ? 0.5 : i / (count - 1);
+      // Arc from 210° to 330° (behind the gateway, facing away from client)
+      const angle = Math.PI * (1.17 + t * 0.66);
+      const x = Math.cos(angle) * radius;
+      const z = Math.sin(angle) * radius - 0.5; // push back
+      const y = Math.sin(t * Math.PI) * 0.4;     // slight up/down variation
+      return new THREE.Vector3(x, y, z);
     });
   }, []);
 
@@ -37,19 +40,19 @@ export function GatewayTopology() {
     result.push({
       from: client,
       to: gateway,
-      duration: 1.4,
+      duration: 1.6,
       offset: 0,
       color: "#22d3ee",
-      lift: 0.3,
+      lift: 0.35,
     });
     // Gateway → client (response)
     result.push({
       from: gateway,
       to: client,
-      duration: 1.4,
+      duration: 1.6,
       offset: 0.5,
       color: "#22d3ee",
-      lift: 0.3,
+      lift: 0.35,
     });
 
     // Gateway ↔ each service (request then response)
@@ -57,18 +60,18 @@ export function GatewayTopology() {
       result.push({
         from: gateway,
         to: p,
-        duration: 2.0 + (i % 2) * 0.3,
+        duration: 2.2 + (i % 2) * 0.3,
         offset: i / positions.length,
         color: SERVICES[i].color,
-        lift: 0.5,
+        lift: 0.6,
       });
       result.push({
         from: p,
         to: gateway,
-        duration: 2.0 + (i % 2) * 0.3,
+        duration: 2.2 + (i % 2) * 0.3,
         offset: i / positions.length + 0.5,
         color: SERVICES[i].color,
-        lift: 0.5,
+        lift: 0.6,
       });
     });
 
@@ -77,11 +80,24 @@ export function GatewayTopology() {
 
   return (
     <group>
-      {/* Client on the far left */}
-      <HubNode position={client.toArray()} label="Client" tech="Browser" color="#22d3ee" size={0.45} wireframe={false} />
+      {/* Client in front */}
+      <HubNode
+        position={client.toArray() as [number, number, number]}
+        label="Client"
+        tech="Browser"
+        color="#22d3ee"
+        size={0.45}
+        wireframe={false}
+      />
       {/* Gateway */}
-      <HubNode position={gateway.toArray()} label="API Gateway" tech="Kong" color="#f472b6" size={0.7} />
-      {/* Services */}
+      <HubNode
+        position={gateway.toArray() as [number, number, number]}
+        label="API Gateway"
+        tech="Kong"
+        color="#f472b6"
+        size={0.7}
+      />
+      {/* Services fanned behind */}
       {SERVICES.map((s, i) => (
         <ServiceNode key={s.label} position={positions[i]} {...s} />
       ))}

@@ -3,6 +3,7 @@ import { Canvas } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
+import SectionHeader from "./SectionHeader";
 import { BrokerTopology } from "./scene/BrokerTopology";
 import { GatewayTopology } from "./scene/GatewayTopology";
 
@@ -27,23 +28,27 @@ const ArchitectureScene = () => {
   return (
     <section
       id="architecture"
-      className="relative py-24 px-4 sm:px-8 bg-background overflow-hidden"
+      className="relative py-24 bg-background overflow-hidden"
     >
-      <div className="max-w-6xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
+      <SectionHeader
+        number="02"
+        label="System Design"
+        heading={
+          <>
+            Microservices <span className="text-primary">in motion</span>
+          </>
+        }
+      />
+
+      <div className="max-w-6xl mx-auto px-4">
+        <motion.p
+          initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="mb-10 text-center"
+          className="text-muted-foreground max-w-2xl mb-10"
         >
-          <p className="font-mono text-sm text-primary mb-2">{"// system design"}</p>
-          <h2 className="text-3xl sm:text-5xl font-bold tracking-tight mb-4">
-            Microservices <span className="text-primary">in motion</span>
-          </h2>
-          <p className="text-muted-foreground max-w-2xl mx-auto">
-            Two patterns I build with every day. Toggle between them to see how services collaborate.
-          </p>
-        </motion.div>
+          Two patterns I build with every day. Toggle between them to see how services collaborate.
+        </motion.p>
 
         {/* Mode toggle */}
         <div className="flex justify-center gap-2 mb-6">
@@ -62,16 +67,16 @@ const ArchitectureScene = () => {
         {/* Canvas */}
         <div className="relative w-full h-[520px] rounded-xl border border-border bg-card/30 overflow-hidden">
           <Canvas
-            camera={{ position: [0, 2.5, 7], fov: 50 }}
+            camera={{ position: [0, 4.5, 7.5], fov: 45 }}
             dpr={[1, 2]}
             gl={{ antialias: true, alpha: true }}
           >
             <color attach="background" args={["#0b0f1a"]} />
-            <fog attach="fog" args={["#0b0f1a", 8, 18]} />
+            <fog attach="fog" args={["#0b0f1a", 10, 22]} />
 
-            <ambientLight intensity={0.4} />
-            <directionalLight position={[5, 5, 5]} intensity={0.7} />
-            <pointLight position={[0, 0, 0]} intensity={1.2} color="#8b5cf6" distance={6} />
+            <ambientLight intensity={0.5} />
+            <directionalLight position={[5, 8, 5]} intensity={0.7} />
+            <pointLight position={[0, 0, 0]} intensity={1.4} color="#8b5cf6" distance={8} />
 
             <Suspense fallback={null}>
               {mode === "broker" ? <BrokerTopology /> : <GatewayTopology />}
@@ -81,9 +86,9 @@ const ArchitectureScene = () => {
               enablePan={false}
               enableZoom={false}
               autoRotate
-              autoRotateSpeed={0.6}
-              minPolarAngle={Math.PI / 3}
-              maxPolarAngle={Math.PI / 2.1}
+              autoRotateSpeed={0.35}
+              minPolarAngle={Math.PI / 4}
+              maxPolarAngle={Math.PI / 2.4}
             />
           </Canvas>
 

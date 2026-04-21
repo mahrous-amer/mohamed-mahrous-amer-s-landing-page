@@ -21,7 +21,7 @@ const categories = [
 ];
 
 const SkillsSection = () => (
-  <section id="skills" className="py-24">
+  <section id="skills" className="relative z-10 py-24">
     <SectionHeader number="03" label="Skills" heading={<>Tech Stack</>} />
 
     <div className="max-w-4xl mx-auto px-4">

@@ -3,7 +3,7 @@ import { MapPin, Building2, Calendar } from "lucide-react";
 import SectionHeader from "./SectionHeader";
 
 const AboutSection = () => (
-  <section id="about" className="py-24">
+  <section id="about" className="relative z-10 py-24">
     <SectionHeader number="01" label="About" heading={<>Who I Am</>} />
 
     <div className="max-w-4xl mx-auto px-4">

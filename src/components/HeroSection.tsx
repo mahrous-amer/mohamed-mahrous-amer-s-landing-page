@@ -10,11 +10,11 @@ const socials = [
 
 const HeroSection = () => {
   return (
-    <section className="relative min-h-screen flex items-center justify-center bg-grid overflow-hidden">
+    <section className="relative min-h-screen flex items-center overflow-hidden">
       {/* Radial glow */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,hsl(217_91%_60%/0.08)_0%,transparent_70%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_30%_50%,hsl(217_91%_60%/0.08)_0%,transparent_70%)]" />
 
-      <div className="relative z-10 text-center px-4">
+      <div className="relative z-10 text-center lg:text-left lg:max-w-[50%] px-8 lg:px-16">
         <motion.p
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
